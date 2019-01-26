@@ -50,7 +50,8 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain_Subsystem();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
-    CameraServer.getInstance().startAutomaticCapture();
+    UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
+    cam.setResolution(640, 480);
   }
 
   /**

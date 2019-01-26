@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -22,7 +24,8 @@ import frc.robot.commands.DriveWithJoystick;
 public class DriveTrain_Subsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  Talon leftFront, leftRear, rightFront, rightRear;
+  Talon leftFront, leftRear;
+  Victor rightFront, rightRear;
   SpeedControllerGroup leftMotors, rightMotors;
   MecanumDrive drive;
 
@@ -31,8 +34,8 @@ public class DriveTrain_Subsystem extends Subsystem {
     leftRear = new Talon(RobotMap.leftRear);
     // leftMotors = new SpeedControllerGroup(leftFront, leftRear);
 
-    rightFront = new Talon(RobotMap.rightFront);
-    rightRear = new Talon(RobotMap.rightRear);
+    rightFront = new Victor(RobotMap.rightFront);
+    rightRear = new Victor(RobotMap.rightRear);
     // rightMotors = new SpeedControllerGroup(rightFront, rightRear);
 
     drive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);

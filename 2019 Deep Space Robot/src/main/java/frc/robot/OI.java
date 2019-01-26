@@ -28,8 +28,8 @@ public class OI {
   public JoystickButton closeButton = new JoystickButton(driveStick, 2);
 
   public OI() {
-    //openButton.whileHeld(new Extend_Piston());
-    //closeButton.whileHeld(new Close_Piston());
+    openButton.whileHeld(new Extend_Piston());
+    closeButton.whileHeld(new Close_Piston());
 
   }
 

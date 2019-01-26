@@ -7,6 +7,12 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,12 +44,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    //piston = new Piston_Subsystem();
+    piston = new Piston_Subsystem();
     //piston.ds.set(false);
     oi = new OI();
     driveTrain = new DriveTrain_Subsystem();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+    CameraServer.getInstance().startAutomaticCapture();
   }
 
   /**

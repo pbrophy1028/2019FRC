@@ -25,12 +25,6 @@ public class DriveWithJoystick extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.driveTrain.arcadeDrive(Robot.oi.driveStick.getRawAxis(1),
-    // Robot.oi.driveStick.getRawAxis(5));
-    // Robot.driveTrain.curvatureDrive(Robot.oi.driveStick.getRawAxis(1),
-    // Robot.oi.driveStick.getRawAxis(5), Robot.oi.quickTurnButton.get());
-
-    // System.out.println("Marco from NI");
 
     double yValue = Robot.oi.driveStick.getRawAxis(1), xValue = Robot.oi.driveStick.getRawAxis(0),
         zValue = Robot.oi.driveStick.getRawAxis(4);
@@ -38,7 +32,7 @@ public class DriveWithJoystick extends Command {
     double[] sticks = { yValue, xValue, zValue };
 
     for (int i = 0; i < sticks.length; i++) {
-      if (sticks[i] < 0.00001)
+      if (sticks[i] < 0.05)
         sticks[i] = 0;
     }
     Robot.driveTrain.cartesianDrive(sticks[0], sticks[1], sticks[2]);

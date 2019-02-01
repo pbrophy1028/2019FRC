@@ -32,26 +32,13 @@ public class DriveTrain_Subsystem extends Subsystem {
   public DriveTrain_Subsystem() {
     leftFront = new Talon (RobotMap.leftFront);
     leftRear = new Talon(RobotMap.leftRear);
-    // leftMotors = new SpeedControllerGroup(leftFront, leftRear);
 
     rightFront = new Victor(RobotMap.rightFront);
     rightRear = new Victor(RobotMap.rightRear);
-    // rightMotors = new SpeedControllerGroup(rightFront, rightRear);
 
     drive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
 
   }
-
-  // public void arcadeDrive(double xValue, double yValue) {
-  // drive.arcadeDrive(xValue, yValue);
-  // }
-
-  // public void curvatureDrive(double xValue, double yValue, boolean
-  // quickTurnButton) {
-
-  // drive.curvatureDrive(xValue, yValue, quickTurnButton);
-
-  // }
  
   public void cartesianDrive(double yVal, double xVal, double zVal) {
     drive.driveCartesian(yVal, xVal, zVal);

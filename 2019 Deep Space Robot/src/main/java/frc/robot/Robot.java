@@ -4,18 +4,69 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
+/*
+  __  __         _____          _                   
+ |  \/  |       / ____|        | |                  
+ | \  / |_ __  | |     __ _ ___| |__   _____      __
+ | |\/| | '__| | |    / _` / __| '_ \ / _ \ \ /\ / /
+ | |  | | |_   | |___| (_| \__ \ | | |  __/\ V  V / 
+ |_|  |_|_(_)   \_____\__,_|___/_| |_|\___| \_/\_/  
+                                                                                        
+                                   `..-::/+++++++//:--.`                                            
+                             `.-/oosoooo++///////++oossss+/-`                                       
+                         `-/osoo+//::::::::::::::::::::/++osso/.                                    
+                      `-+so+::--------::::::::::::::::::::///+oss:`                                 
+                    `/ss/:---------------:////::::::::::::::++++oyy/`                               
+                  `/so:-....------------+o++++o+::::::::::/oo++++osyy:                              
+                 .ss:.......-----://++oshyssoo+++:::::::/+syyyyyyyyyyho`                            
+                `ys-.......------hhddddhdddddhhhy+/++/+yhhhhhhhhhhdddhhy.                           
+                /h-.......-----oyddmhyhhdddhyyyyhddhhhdhyhhddddhyyyyddddy:.`                        
+                +h......-------hddmhsdddddhyyyyyhdddddmsyddddhyyyyyyhmddddhyo/.                     
+                -h/.....-------/+hdyydddhyyyyyydhdmdhdmshdddyyyyyyhdhmmdddmdddh.                    
+                 /y/........-----sdhydhyyyyyyhdyymh:-+dyydhyyyyyydhyymd++sd/:::                     
+                  :yo:--.........:ddhyyyyyyhdhyhdd+---odhyyyyyyhdyyhdds///h+                        
+                   `:ossoo+++////::+shhhhhddhhdhy+.----:ohhhhhddhdhys+////sy                        
+                       `..--::::/+oso/--:://///s:...------:////////+//////oh.                       
+                                    -oy/...----:+--..-----::::/+oo/://////+h:                       
+                                      -++--.-:::/+:-:+-/://::-.yy+::://////h/                       
+                                  .:/+o/ys.--.:+:``` ` ` ``` ``s+:::://////hs+/-`                   
+                               .+o+///+/sh--.-/++:--.:.-..`` `//::::://////ho//+oo/.                
+                             `+o///oo+:.-h/-.-/s:---...```.-/+::::::://///+ho+o///+s+`              
+                             ++:/+o+`   :h-..--------::::::::::::::://////oh` `+o:/+oo              
+                             s/:/+s:   .yo...----...------:::::::::://////yo   .y::/+y              
+                             /o:/++s. -yo-...----...-----::::::::::://///oh-  `o+::/os              
+                             `s/:/+os/oo+/:.----...------:::::::::://////yy//:oo::/+s-              
+                              .o++o/-.```-++----..------:::::::::://///+o:.`..:+o++s:               
+                              .+y+-`      `::///:::----::::::::::/++++//-`     `-+y-                
+                           `/ss+y-`           ``.-/+/-:::::::::++/-.``          `-s.                
+                          :yo:-.+s`                `y:::::::::s:                 +o`                
+                         :h/....:o                 `y::::::::/s.                 +:                 
+                         ys-----/o`                -s::::::///o:                `+/                 
+                        `sy-----:s-`            - `++::://///+so` .`           `.o-                 
+                      .-:/ho:----:o//-     :  `:o/oy/////++sysoyo:+/`  -     `::+:                  
+                     .::::/sy/:---:/oo-` `-o:/ooooo+++ossss+/::/oo+o+/:+-`  .+o:.                   
+                     `-:::::+sso+////oo++ooy++sssssssso+/:::::::://+o++s+/::/+`                     
+                       `.-::::/+oossssyyysssssoo++//::::::::::::::-.`--. `...                       
+                          ``..--::::::::::::::::::::::::::::--..``                                  
+                                  `````..............`````     
+*/
 
 package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain_Subsystem;
+import frc.robot.subsystems.ElectroMagnet_Subsystem;
 import frc.robot.subsystems.Piston_Subsystem;
+import frc.robot.subsystems.Pixy_Subsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,11 +76,17 @@ import frc.robot.subsystems.Piston_Subsystem;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static ElectroMagnet_Subsystem magnet;
   public static OI oi;
   public static DriveTrain_Subsystem driveTrain;
   public static Piston_Subsystem piston;
+  public static SerialPort arduino;
+  public static Pixy_Subsystem pixy;
+  public static DigitalInput limitLeft, limitRight;
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static Timer timer;
+  public boolean startCompressor;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -37,13 +94,37 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    try {
+      arduino = new SerialPort(115200, SerialPort.Port.kUSB);
+    } catch (Exception e) {
+      System.out.println("You are ok.");
+      try {
+        arduino = new SerialPort(115200, SerialPort.Port.kUSB1);
+      } catch (Exception e1) {
+        System.out.println("You are almost dead.");
+        try {
+          arduino = new SerialPort(115200, SerialPort.Port.kUSB);
+        } catch (Exception e2) {
+          System.out.println("May Marco have mercy upon your soul.");
+        }
+      }
+    }
+    driveTrain = new DriveTrain_Subsystem();
+    magnet = new ElectroMagnet_Subsystem();
+    pixy = new Pixy_Subsystem();
     piston = new Piston_Subsystem();
     oi = new OI();
-    driveTrain = new DriveTrain_Subsystem();
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
+// /*
     UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
     cam.setResolution(640, 480);
+    limitLeft = new DigitalInput(1);
+    limitRight = new DigitalInput(0);
+    timer = new Timer();
+    startCompressor = true;
+    driveTrain.drive.feedWatchdog();
+    // */
   }
 
   /**
@@ -57,6 +138,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // if (timer.get() >= 5) {
+    //   pixy.see();
+    //   timer.reset();
+    // }
+    //  System.out.print(limit.get());
+      driveTrain.drive.feedWatchdog();
+      if (piston.counter >= 14){
+        if (startCompressor) {
+          timer.start();
+          piston.c.start();
+          startCompressor = false;
+        }
+        
+        if (timer.get() >= 55){
+          piston.c.stop();
+          piston.counter = 0;
+          timer.stop();
+          timer.reset();
+          startCompressor = true;
+        }
+      }
   }
 
   /**

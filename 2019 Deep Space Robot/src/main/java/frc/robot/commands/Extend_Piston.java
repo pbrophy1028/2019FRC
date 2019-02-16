@@ -7,13 +7,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class Extend_Piston extends Command {
+  Timer timer;
   public Extend_Piston() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.piston);
+    timer = new Timer();
+    timer.start();
   }
 
   // Called just before this Command runs the first time
@@ -30,12 +34,14 @@ public class Extend_Piston extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    //return (timer.get() > 500);
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+
   }
 
   // Called when another command which requires one or more of the same

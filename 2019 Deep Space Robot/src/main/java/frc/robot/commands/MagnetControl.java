@@ -9,13 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.Relay;
 
-public class DriveWithJoystick extends Command {
-  public double xAct, yAct, zAct;
+public class MagnetControl extends Command {
 
-  public DriveWithJoystick() {
+  public MagnetControl() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.driveTrain);
+    requires(Robot.magnet);
   }
 
   // Called just before this Command runs the first time
@@ -28,18 +28,8 @@ public class DriveWithJoystick extends Command {
   @Override
   protected void execute() {
 
-    double yValue = Robot.oi.driveStick.getRawAxis(1), xValue = Robot.oi.driveStick.getRawAxis(0),
-        zValue = Robot.oi.driveStick.getRawAxis(4);
-
-    double[] sticks = { yValue, xValue, zValue };
-
-    for (int i = 0; i < sticks.length; i++) {
-      if (sticks[i] < 0.05 && sticks[i] > 0)
-        sticks[i] = 0;
-      sticks[i] *= .75;
-    }
-
-    Robot.driveTrain.cartesianDrive(sticks[0], sticks[1], sticks[2]);
+    Robot.magnet.magnet.set(true);
+    System.out.println("Magnet on");
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -57,5 +47,7 @@ public class DriveWithJoystick extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.magnet.magnet.set(false);
+    System.out.println("Magnet off");
   }
 }

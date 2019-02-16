@@ -10,36 +10,23 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveWithJoystick extends Command {
-  public double xAct, yAct, zAct;
-
-  public DriveWithJoystick() {
+public class CompressorControl extends Command {
+  public CompressorControl() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.driveTrain);
+    // eg. requires(chassis);
+    requires(Robot.piston);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
-    double yValue = Robot.oi.driveStick.getRawAxis(1), xValue = Robot.oi.driveStick.getRawAxis(0),
-        zValue = Robot.oi.driveStick.getRawAxis(4);
-
-    double[] sticks = { yValue, xValue, zValue };
-
-    for (int i = 0; i < sticks.length; i++) {
-      if (sticks[i] < 0.05 && sticks[i] > 0)
-        sticks[i] = 0;
-      sticks[i] *= .75;
-    }
-
-    Robot.driveTrain.cartesianDrive(sticks[0], sticks[1], sticks[2]);
+    Robot.piston.c.start();
+    Robot.piston.counter = 0;
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -51,11 +38,13 @@ public class DriveWithJoystick extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.piston.c.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.piston.c.stop();
   }
 }

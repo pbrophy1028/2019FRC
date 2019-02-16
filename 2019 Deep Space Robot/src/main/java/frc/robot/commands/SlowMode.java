@@ -10,10 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveWithJoystick extends Command {
-  public double xAct, yAct, zAct;
-
-  public DriveWithJoystick() {
+public class SlowMode extends Command {
+  public SlowMode() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.driveTrain);
   }
@@ -21,25 +19,22 @@ public class DriveWithJoystick extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
     double yValue = Robot.oi.driveStick.getRawAxis(1), xValue = Robot.oi.driveStick.getRawAxis(0),
-        zValue = Robot.oi.driveStick.getRawAxis(4);
+    zValue = Robot.oi.driveStick.getRawAxis(4);
 
-    double[] sticks = { yValue, xValue, zValue };
+double[] sticks = { yValue, xValue, zValue };
 
-    for (int i = 0; i < sticks.length; i++) {
-      if (sticks[i] < 0.05 && sticks[i] > 0)
-        sticks[i] = 0;
-      sticks[i] *= .75;
-    }
-
-    Robot.driveTrain.cartesianDrive(sticks[0], sticks[1], sticks[2]);
+for (int i = 0; i < sticks.length; i++) {
+  if (sticks[i] < 0.05 && sticks[i] > 0)
+    sticks[i] = 0;
+  sticks[i] *= .25;
+}
+Robot.driveTrain.drive.driveCartesian(sticks[1], sticks[0], sticks[2]);
   }
 
   // Make this return true when this Command no longer needs to run execute()

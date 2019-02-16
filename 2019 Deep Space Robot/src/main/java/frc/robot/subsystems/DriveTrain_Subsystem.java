@@ -9,10 +9,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -27,7 +25,7 @@ public class DriveTrain_Subsystem extends Subsystem {
   Talon leftFront, leftRear;
   Victor rightFront, rightRear;
   SpeedControllerGroup leftMotors, rightMotors;
-  MecanumDrive drive;
+  public MecanumDrive drive;
 
   public DriveTrain_Subsystem() {
     leftFront = new Talon (RobotMap.leftFront);
@@ -37,11 +35,11 @@ public class DriveTrain_Subsystem extends Subsystem {
     rightRear = new Victor(RobotMap.rightRear);
 
     drive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear);
-
   }
  
   public void cartesianDrive(double yVal, double xVal, double zVal) {
-    drive.driveCartesian(yVal, xVal, zVal);
+    drive.driveCartesian(xVal, yVal, zVal);
+    drive.feedWatchdog();
   }
 
   @Override

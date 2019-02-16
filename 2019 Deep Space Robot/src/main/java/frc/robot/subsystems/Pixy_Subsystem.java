@@ -7,39 +7,28 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.Close_Piston;
-
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class Piston_Subsystem extends Subsystem {
+public class Pixy_Subsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  public DoubleSolenoid ds;
-  public Compressor c;
-  public int counter;
-
-  public Piston_Subsystem() {
-    ds = new DoubleSolenoid(0, 1);
-    ds.set(DoubleSolenoid.Value.kOff);
-    c = new Compressor();
-    c.stop();
-    counter = 0;
+  public SerialPort arduino;
+ 
+  public Pixy_Subsystem() {
+    arduino = Robot.arduino;
+    
   }
-  
-  public void extend() {
-    ds.set(DoubleSolenoid.Value.kForward);
-  }
-  public void close() {
-    ds.set(DoubleSolenoid.Value.kReverse);
+  public String see() {
+    return arduino.readString();
   }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    //setDefaultCommand(new Close_Piston());
+    // setDefaultCommand(new MySpecialCommand());
   }
 }

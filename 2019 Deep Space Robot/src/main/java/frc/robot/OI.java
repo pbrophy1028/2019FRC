@@ -10,8 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.Close_Piston;
-import frc.robot.commands.Extend_Piston;
+import frc.robot.commands.CompressorControl;
+import frc.robot.commands.MagnetControl;
+import frc.robot.commands.Parking;
+import frc.robot.commands.PistonControl;
+import frc.robot.commands.YeetSpeed;
+import frc.robot.commands.SlowMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -24,13 +28,20 @@ public class OI {
   // You create one by telling it which joystick it's on and which button
   // number it is.
   public Joystick driveStick = new Joystick(0);
-  public JoystickButton openButton = new JoystickButton(driveStick, 1);
-  public JoystickButton closeButton = new JoystickButton(driveStick, 2);
+  public JoystickButton pistonButton = new JoystickButton(driveStick, 1);//A button
+  public JoystickButton compressorButton = new JoystickButton(driveStick, 2);//B button
+  public JoystickButton magnetButton = new JoystickButton(driveStick, 3);//X button
+  public JoystickButton parkStart = new JoystickButton(driveStick, 4);// Y Button
+  public JoystickButton slowBumper = new JoystickButton(driveStick, 5);//Left Bumper
+  public JoystickButton yeetButton = new JoystickButton(driveStick, 6);//Right Bumper
 
   public OI() {
-    openButton.whileHeld(new Extend_Piston());
-    closeButton.whileHeld(new Close_Piston());
-
+    pistonButton.toggleWhenPressed(new PistonControl());
+    compressorButton.toggleWhenPressed(new CompressorControl());
+    magnetButton.toggleWhenPressed(new MagnetControl());
+    parkStart.whileHeld(new Parking());
+    slowBumper.whileHeld(new SlowMode());
+    yeetButton.whileHeld(new YeetSpeed());
   }
 
   // There are a few additional built in buttons you can use. Additionally,

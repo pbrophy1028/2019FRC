@@ -21,7 +21,9 @@ public class DriveWithJoystick extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+    xAct = 0;
+    yAct = 0;
+    zAct = 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -36,10 +38,31 @@ public class DriveWithJoystick extends Command {
     for (int i = 0; i < sticks.length; i++) {
       if (sticks[i] < 0.05 && sticks[i] > 0)
         sticks[i] = 0;
-      sticks[i] *= .75;
-    }
+      //sticks[i] *= .75;
 
-    Robot.driveTrain.cartesianDrive(sticks[0], sticks[1], sticks[2]);
+    }
+    if (yAct < sticks[0] && yAct < .65)
+      yAct += 0.05;
+    else if (yAct > sticks[0] && yAct > -.65)
+      yAct -= 0.05;
+
+    if (xAct < sticks[1] && xAct < .65)
+      xAct += 0.05;
+    else if (xAct > sticks[1] && xAct > -.65)
+      xAct -= 0.05;
+
+    if (zAct < sticks[2] && zAct < .70)
+      zAct += 0.05;
+    else if (zAct > sticks[2])
+      zAct -= 0.05;
+
+    /*
+    yAct += (sticks[0] - yAct) / 2;
+    xAct += (sticks[1] - xAct) / 2;
+    zAct += (sticks[2] - zAct) / 2;
+    */ 
+
+    Robot.driveTrain.cartesianDrive(yAct, xAct, zAct);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -32,7 +32,7 @@ double[] sticks = { yValue, xValue, zValue };
 for (int i = 0; i < sticks.length; i++) {
   if (sticks[i] < 0.05 && sticks[i] > 0)
     sticks[i] = 0;
-  sticks[i] *= .25;
+  sticks[i] *= .3;
 }
 Robot.driveTrain.drive.driveCartesian(sticks[1], sticks[0], sticks[2]);
   }

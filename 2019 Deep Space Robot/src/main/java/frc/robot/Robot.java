@@ -56,6 +56,7 @@ package frc.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -87,6 +88,8 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
   public static Timer timer;
   public boolean startCompressor;
+  public static boolean connectionStatus;
+  public static boolean connectionOverride;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -109,6 +112,7 @@ public class Robot extends TimedRobot {
         }
       }
     }
+    connectionStatus = DriverStation.getInstance().isFMSAttached();
     driveTrain = new DriveTrain_Subsystem();
     magnet = new ElectroMagnet_Subsystem();
     pixy = new Pixy_Subsystem();
@@ -118,7 +122,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto mode", m_chooser);
 // /*
     UsbCamera cam = CameraServer.getInstance().startAutomaticCapture();
-    cam.setResolution(640, 480);
+    cam.setResolution(256, 144);
+    cam.setFPS(30);
+    cam.setExposureManual(25);
     limitLeft = new DigitalInput(1);
     limitRight = new DigitalInput(0);
     timer = new Timer();
@@ -143,6 +149,12 @@ public class Robot extends TimedRobot {
     //   timer.reset();
     // }
     //  System.out.print(limit.get());
+    if (connectionOverride == true){
+      connectionStatus = true;
+    }
+    else{
+      connectionStatus = DriverStation.getInstance().isFMSAttached();
+    }
       driveTrain.drive.feedWatchdog();
       if (piston.counter >= 14){
         if (startCompressor) {

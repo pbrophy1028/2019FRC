@@ -7,10 +7,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-
+// Not changing till gyroscope
+// Do not Touch!
 public class Parking extends Command {
   String direction;
 
@@ -45,11 +45,11 @@ public class Parking extends Command {
 
     }
     if (direction.indexOf("strafeLeft") != -1) {
-      Robot.driveTrain.cartesianDrive(0, -.25, 0);
+      Robot.driveTrain.cartesianDrive(0, -.27, 0);
       System.out.println("strafe left");
 
     } else if (direction.indexOf("strafeRight") != -1) {
-      Robot.driveTrain.cartesianDrive(0, .25, 0);
+      Robot.driveTrain.cartesianDrive(0, .27, 0);
       System.out.println("strafe right");
 
     }
@@ -57,7 +57,6 @@ public class Parking extends Command {
       System.out.println("line not found");
       Robot.driveTrain.cartesianDrive(0, 0, 0);
     }
-
     //for (int i = 0; i < 100000000000; i++) {}
     Robot.driveTrain.drive.feedWatchdog();
   }

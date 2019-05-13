@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class CompressorControl extends Command {
@@ -27,6 +28,7 @@ public class CompressorControl extends Command {
   protected void execute() {
     Robot.piston.c.start();
     Robot.piston.counter = 0;
+    SmartDashboard.putBoolean("Compressor", true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -39,6 +41,7 @@ public class CompressorControl extends Command {
   @Override
   protected void end() {
     Robot.piston.c.stop();
+    SmartDashboard.putBoolean("Compressor", false);
   }
 
   // Called when another command which requires one or more of the same
@@ -46,5 +49,6 @@ public class CompressorControl extends Command {
   @Override
   protected void interrupted() {
     Robot.piston.c.stop();
+    SmartDashboard.putBoolean("Compressor", false);
   }
 }

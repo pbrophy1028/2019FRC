@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj.Joystick;
 
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CompressorControl;
+import frc.robot.commands.ConnectionFailsafe;
 import frc.robot.commands.MagnetControl;
 import frc.robot.commands.Parking;
 import frc.robot.commands.PistonControl;
-import frc.robot.commands.YeetSpeed;
 import frc.robot.commands.SlowMode;
 
 /**
@@ -33,7 +33,7 @@ public class OI {
   public JoystickButton magnetButton = new JoystickButton(driveStick, 3);//X button
   public JoystickButton parkStart = new JoystickButton(driveStick, 4);// Y Button
   public JoystickButton slowBumper = new JoystickButton(driveStick, 5);//Left Bumper
-  public JoystickButton yeetButton = new JoystickButton(driveStick, 6);//Right Bumper
+  public JoystickButton connectionOveride = new JoystickButton(driveStick, 6);//Right Bumper
 
   public OI() {
     pistonButton.toggleWhenPressed(new PistonControl());
@@ -41,7 +41,7 @@ public class OI {
     magnetButton.toggleWhenPressed(new MagnetControl());
     parkStart.whileHeld(new Parking());
     slowBumper.whileHeld(new SlowMode());
-    yeetButton.whileHeld(new YeetSpeed());
+    connectionOveride.whenPressed(new ConnectionFailsafe());
   }
 
   // There are a few additional built in buttons you can use. Additionally,

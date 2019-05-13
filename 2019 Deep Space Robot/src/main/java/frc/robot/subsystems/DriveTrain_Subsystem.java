@@ -38,8 +38,10 @@ public class DriveTrain_Subsystem extends Subsystem {
   }
  
   public void cartesianDrive(double yVal, double xVal, double zVal) {
-    drive.driveCartesian(xVal, yVal, zVal);
-    drive.feedWatchdog();
+    if (Robot.connectionStatus == true){
+      drive.driveCartesian(xVal, yVal, zVal);
+      drive.feedWatchdog();
+    }
   }
 
   @Override

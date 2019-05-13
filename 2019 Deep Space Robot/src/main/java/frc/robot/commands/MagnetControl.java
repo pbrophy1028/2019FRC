@@ -8,8 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.Relay;
 
 public class MagnetControl extends Command {
 
@@ -28,8 +28,8 @@ public class MagnetControl extends Command {
   @Override
   protected void execute() {
 
-    Robot.magnet.magnet.set(true);
-    System.out.println("Magnet on");
+    Robot.magnet.electroMagnet.set(true);
+    SmartDashboard.putBoolean("Magnet State", true);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -47,7 +47,7 @@ public class MagnetControl extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.magnet.magnet.set(false);
-    System.out.println("Magnet off");
+    Robot.magnet.electroMagnet.set(false);
+    SmartDashboard.putBoolean("Magnet State", false);
   }
 }

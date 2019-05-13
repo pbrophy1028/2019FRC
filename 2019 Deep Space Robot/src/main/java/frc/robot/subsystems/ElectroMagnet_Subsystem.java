@@ -8,19 +8,20 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
  */
 public class ElectroMagnet_Subsystem extends Subsystem {
-  public Solenoid magnet;
+  public Solenoid electroMagnet;
   
   public ElectroMagnet_Subsystem() {
 
-    magnet = new Solenoid(2);
-    magnet.set(false);
+    electroMagnet = new Solenoid(2);
+    electroMagnet.set(true);
+    SmartDashboard.putBoolean("Magnet State", electroMagnet.get());
   }
 
   @Override

@@ -44,11 +44,6 @@ public class DriveTrain_Subsystem extends Subsystem {
     }
   }
 
-  public void polarDrive(double magnitude, double angle, double zRotation){
-    drive.drivePolar(magnitude, angle, zRotation);
-    drive.feedWatchdog();
-  }
-
   public void snapTurning(int dpadVal){
     if (dpadVal == 0){
 

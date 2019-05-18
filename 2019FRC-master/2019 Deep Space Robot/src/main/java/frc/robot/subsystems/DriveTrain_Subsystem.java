@@ -44,6 +44,26 @@ public class DriveTrain_Subsystem extends Subsystem {
     }
   }
 
+  public void polarDrive(double magnitude, double angle, double zRotation){
+    drive.drivePolar(magnitude, angle, zRotation);
+    drive.feedWatchdog();
+  }
+
+  public void snapTurning(int dpadVal){
+    if (dpadVal == 0){
+
+    }
+    else if (dpadVal == 90){
+
+    }
+    else if (dpadVal == 180){
+
+    }
+    else{
+
+    }
+  }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

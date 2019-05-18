@@ -44,6 +44,10 @@ public class DriveTrain_Subsystem extends Subsystem {
     }
   }
 
+  public void polarDrive(double mag, double ang, double zRot){
+    drive.drivePolar(mag, ang, zRot);
+  }
+
   public void snapTurning(int dpadVal){
     if (dpadVal == 0){
 
@@ -54,9 +58,10 @@ public class DriveTrain_Subsystem extends Subsystem {
     else if (dpadVal == 180){
 
     }
-    else{
+    else if (dpadVal == 270){
 
     }
+
   }
 
   @Override
